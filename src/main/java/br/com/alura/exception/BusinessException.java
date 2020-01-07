@@ -3,7 +3,12 @@ package br.com.alura.exception;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BusinessException extends Exception {
+import javax.ejb.ApplicationException;
+
+//quando tem rollback o email não é salvo e enviado, RuntimeException gera um rollback
+//JTA(java transaction api)
+@ApplicationException(rollback = true)
+public class BusinessException extends RuntimeException {
 
 	/**
 	 * @author lhsousa

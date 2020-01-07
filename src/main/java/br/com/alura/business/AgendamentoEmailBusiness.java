@@ -5,6 +5,10 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,9 +25,17 @@ import br.com.alura.interceptor.Logger;
 //Para utilizar EJB colocar a anotação Stateless, gerenciada pelo contaner JEE
 @Stateless
 @Logger
+/**
+ *
+ * @author lhsousa: @TransactionManagement abrindo e fechando transação, se for
+ *         bean terei de fazer manualmente, container faz a transação
+ *         automaticamente.
+ *
+ */
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class AgendamentoEmailBusiness {
 
-	// Gerenciada pelo EJB
+	// Gerenciada pelo EJB, injeção de dependencia
 	@Inject
 	private AgendamentoEmailDao agendamentoEmailDao;
 
@@ -38,6 +50,7 @@ public class AgendamentoEmailBusiness {
 	}
 
 	// Validando usando bean validate
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED) // escopo de transação
 	public void salvarAgendamentoEmail(@Valid AgendamentoEmail agendamentoEmail) throws BusinessException {
 
 		if (!agendamentoEmailDao.listarAgendamentosEmailPorEmail(agendamentoEmail.getEmail()).isEmpty()) {
@@ -47,6 +60,7 @@ public class AgendamentoEmailBusiness {
 
 		agendamentoEmail.setEnviado(false);
 		agendamentoEmailDao.salvarAgendamentoEmail(agendamentoEmail);
+		throw new RuntimeException();
 	}
 
 	public List<AgendamentoEmail> listarAgendamentosEmailNaoEnviados() {

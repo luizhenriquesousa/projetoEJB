@@ -12,7 +12,12 @@ import javax.validation.constraints.NotBlank;
 //Criando entidade para mapeamento no banco
 //Serializada ela vai me ajudar a transformar em um file
 @Entity
-public class AgendamentoEmail implements Serializable{
+public class AgendamentoEmail implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
@@ -21,16 +26,16 @@ public class AgendamentoEmail implements Serializable{
 	@Column
 	// não pode ser branco, branco é diferente de nulo.
 	// Colocando a mensagem dos properties na entidade.
-	//@NotBlank(message = "{agendamentoEmail.email.vazio}")
-	//@Email(message = "{agendamentoEmail.email.invalido}")
+	@NotBlank(message = "{agendamentoEmail.email.vazio}")
+	@Email(message = "{agendamentoEmail.email.invalido}")
 	private String email;
 
 	@Column
-	//@NotBlank(message = "{agendamentoEmail.assunto.vazio}")
+	@NotBlank(message = "{agendamentoEmail.assunto.vazio}")
 	private String assunto;
 
 	@Column
-	//@NotBlank(message = "{agendamentoEmail.mensagem.vazio}")
+	@NotBlank(message = "{agendamentoEmail.mensagem.vazio}")
 	private String mensagem;
 
 	@Column
